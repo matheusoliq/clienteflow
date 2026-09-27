@@ -143,8 +143,28 @@
   gap: var(--space-4);
   background: var(--color-surface);
   border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-border);
   border-radius: var(--radius-md);
   padding: var(--space-4);
+  transition: box-shadow var(--transition-base), transform var(--transition-base), border-left-color var(--transition-base);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+/* Faixa lateral colorida por status — leitura rápida sem precisar ler o badge */
+.card--danger { border-left-color: var(--color-danger); }
+.card--em_andamento { border-left-color: var(--color-progress); }
+.card--concluido { border-left-color: var(--color-success); }
+.card--orcado,
+.card--cancelado { border-left-color: var(--color-border); }
+
+.card__linha {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
 }
 
 .card__cabecalho {
@@ -152,6 +172,21 @@
   align-items: center;
   gap: var(--space-3);
   flex-wrap: wrap;
+}
+
+/* Avatar de iniciais do cliente */
+.avatar {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-sm);
 }
 
 .card__titulo {
@@ -168,6 +203,42 @@
   display: flex;
   gap: var(--space-2);
   flex-shrink: 0;
+}
+
+/* Ícones (SVG construído via JS, ver dom.js) */
+.icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.btn .icon {
+  margin-right: var(--space-1);
+}
+
+.ledger__icon {
+  width: 22px;
+  height: 22px;
+  color: var(--color-ink-soft);
+  flex-shrink: 0;
+}
+
+.ledger__item--danger .ledger__icon { color: var(--color-danger); }
+.ledger__item--alerta .ledger__icon { color: var(--color-accent); }
+.ledger__item--sucesso .ledger__icon { color: var(--color-success); }
+
+.empty-state__icon {
+  display: block;
+  width: 36px;
+  height: 36px;
+  color: var(--color-border);
+  margin: 0 auto var(--space-2);
+}
+
+/* Botões com ícone (editar/excluir/novo) */
+.btn {
+  display: inline-flex;
+  align-items: center;
 }
 
 /* Badges de status */
@@ -263,6 +334,20 @@
 }
 
 /* Modal */
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalScaleIn {
+  from { opacity: 0; transform: translateY(8px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal-backdrop, .modal, .toast { animation: none !important; }
+}
+
 .modal-backdrop {
   position: fixed;
   inset: 0;
@@ -272,6 +357,7 @@
   justify-content: center;
   padding: var(--space-4);
   z-index: 50;
+  animation: modalFadeIn 150ms ease;
 }
 
 .modal {
@@ -283,6 +369,7 @@
   max-height: 90vh;
   overflow-y: auto;
   box-shadow: var(--shadow-md);
+  animation: modalScaleIn 180ms ease;
 }
 
 .modal__titulo {
@@ -295,6 +382,27 @@
   justify-content: flex-end;
   gap: var(--space-2);
   margin-top: var(--space-4);
+}
+
+.modal__aviso {
+  text-align: center;
+}
+
+.modal__aviso-icon {
+  display: block;
+  width: 32px;
+  height: 32px;
+  color: var(--color-accent);
+  margin: 0 auto var(--space-3);
+}
+
+.modal__aviso p {
+  color: var(--color-ink-soft);
+  margin-bottom: var(--space-2);
+}
+
+.modal__aviso .modal__acoes {
+  justify-content: center;
 }
 
 /* Toast */
@@ -310,6 +418,11 @@
   z-index: 60;
 }
 
+@keyframes toastSlideIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .toast {
   padding: var(--space-3) var(--space-4);
   border-radius: var(--radius-sm);
@@ -317,6 +430,7 @@
   background: var(--color-ink);
   box-shadow: var(--shadow-md);
   max-width: 320px;
+  animation: toastSlideIn 180ms ease;
 }
 
 .toast--erro {

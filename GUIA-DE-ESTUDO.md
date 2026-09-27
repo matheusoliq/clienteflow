@@ -4,6 +4,8 @@ Este guia explica cada arquivo do projeto pelo ângulo de "por que foi construí
 
 Para cada arquivo: o que ele faz, por que foi criado, por que essa abordagem (e não outra), como funciona por dentro, os conceitos envolvidos, o que você precisa treinar até dominar, e o que vale anotar no seu caderno técnico.
 
+> **Nota sobre a arquitetura de módulos:** a primeira versão deste projeto usava módulos ES nativos (`import`/`export`). Eles foram trocados por um namespace global (`window.ClientFlow`) porque módulos ES só executam em páginas servidas por HTTP — abertas como arquivo local (duplo clique), o navegador bloqueia o carregamento por CORS e a aplicação fica sem nenhuma interatividade. As explicações abaixo já refletem a versão com namespace global.
+
 ---
 
 ## `js/utils.js`

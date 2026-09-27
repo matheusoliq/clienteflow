@@ -3,7 +3,7 @@
 // (os dados moram no LocalStorage do próprio navegador), não existe
 // conteúdo "sempre novo" para buscar na rede — cachear tudo é seguro
 // e é o que permite abrir o app inteiro offline.
-const CACHE_NAME = 'clientflow-v1';
+const CACHE_NAME = 'clientflow-v2';
 
 const ARQUIVOS_APP_SHELL = [
   './',

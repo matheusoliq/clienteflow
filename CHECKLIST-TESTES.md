@@ -9,7 +9,7 @@
 - [ ] Excluir um cliente **com** projetos vinculados e confirmar que os projetos somem junto
 
 ## Projetos
-- [ ] Tentar criar projeto sem nenhum cliente cadastrado (deve orientar a cadastrar um cliente antes)
+- [ ] Tentar criar projeto sem nenhum cliente cadastrado — deve abrir um aviso explicando o motivo, com um botão que leva direto ao formulário de novo cliente
 - [ ] Criar projeto válido vinculado a um cliente
 - [ ] Tentar criar projeto com valor zero ou negativo
 - [ ] Tentar criar projeto com prazo anterior à data de início
@@ -54,6 +54,10 @@
 - [ ] Testar em 1024px e 1440px (notebook/desktop)
 - [ ] Testar em orientação vertical e horizontal no celular
 - [ ] Confirmar que não há rolagem horizontal indesejada em nenhuma largura
+
+## Abertura direta (sem servidor)
+- [ ] Dar duplo clique em `index.html` e confirmar que a interface responde normalmente (cadastro, busca, filtros, painel de alertas)
+- [ ] Confirmar no console que não há erro de CORS/módulo bloqueado
 
 ## PWA
 - [ ] Verificar se o botão "Instalar aplicativo" aparece em um navegador baseado em Chromium

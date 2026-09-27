@@ -23,7 +23,8 @@ Um cadastro único de clientes e projetos, guardado localmente no navegador, com
 - Filtro de projetos por cliente e por status.
 - Ordenação de projetos por prazo, valor ou data de criação.
 - Painel de alertas: projetos atrasados, projetos que vencem nos próximos 7 dias, receita prevista (projetos em aberto) e receita recebida (projetos concluídos) — tudo recalculado a cada carregamento.
-- Estados de interface claros: vazio (sem clientes/projetos), sem resultados de busca/filtro, sucesso e erro de validação.
+- Estados de interface claros: vazio (sem clientes/projetos, com ícone), sem resultados de busca/filtro, sucesso e erro de validação. Tentar criar um projeto sem nenhum cliente cadastrado abre um aviso guiando o usuário a cadastrar um cliente primeiro, em vez de bloquear silenciosamente.
+- Identidade visual: avatar com iniciais para cada cliente, ícones SVG desenhados via `createElementNS` (sem nenhuma lib de ícones) e cartões de projeto com uma faixa lateral colorida por status, para leitura rápida do painel.
 - Instalável como aplicativo (PWA), com funcionamento offline do app shell.
 
 ## Tecnologias
@@ -68,7 +69,9 @@ Cada arquivo JS tem uma responsabilidade única e depende apenas do que precisa:
 
 ## Como executar
 
-Este projeto usa módulos ES nativos (`<script type="module">`), que exigem que os arquivos sejam servidos por HTTP — abrir `index.html` diretamente como `file://` não funciona nos navegadores. Duas opções simples:
+Basta dar duplo clique em `index.html` — a aplicação (cadastro, edição, busca, filtros, painel de alertas) funciona direto, sem instalar nada e sem servidor. Essa foi uma decisão deliberada: o app usa scripts comuns (`<script src="...">`), não módulos ES (`type="module"`), justamente para não depender de um servidor local (ver "Decisões técnicas" abaixo).
+
+Duas partes dependem de HTTP(S) por exigência do próprio navegador (não é uma limitação deste projeto): o Service Worker (funcionamento offline) e a instalação como PWA. Para testar essas duas, sirva os arquivos por HTTP:
 
 ```bash
 # Opção 1: servidor embutido do Python
@@ -130,6 +133,7 @@ Todo conteúdo vindo do usuário (nomes, títulos, etc.) é inserido via `textCo
 
 ## Decisões técnicas
 
+- **Namespace global (`window.ClientFlow`) em vez de módulos ES (`import`/`export`):** módulos ES só executam em páginas servidas por HTTP/HTTPS — abertos como arquivo local (`file://`), o navegador bloqueia o carregamento por CORS, e a aplicação inteira fica muda (nenhum evento é ligado). Como um dos objetivos do projeto é "algo que alguém baixe e use direto", trocamos por scripts comuns carregados em ordem de dependência, todos publicando suas funções em um único objeto global. A separação em módulos por responsabilidade (`state`, `dom`, `events`...) continua a mesma — só a forma de conectá-los mudou.
 - **Sem framework:** o objetivo do projeto era demonstrar domínio de fundamentos (DOM, eventos, estado, persistência) sem a abstração de uma lib cuidar disso.
 - **Status "atrasado" calculado, não salvo:** evita que o dado fique desatualizado; é sempre derivado do `prazo` + data atual no momento da renderização.
 - **Uma única camada de LocalStorage (`storage.js`):** centraliza serialização/tratamento de erro em vez de espalhar `localStorage.getItem/setItem` pela aplicação.

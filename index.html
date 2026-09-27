@@ -92,6 +92,18 @@
   <div id="modal-root" aria-hidden="true"></div>
   <div id="toast-root" class="toast-root" aria-live="polite"></div>
 
-  <script type="module" src="./js/main.js"></script>
+  <!--
+    Scripts comuns (sem type="module") em vez de módulos ES: assim o app
+    funciona com um duplo-clique no index.html, sem precisar de servidor
+    local — módulos ES são bloqueados por CORS quando abertos via file://.
+    A ordem importa: cada arquivo espera que o anterior já tenha rodado.
+  -->
+  <script src="./js/utils.js"></script>
+  <script src="./js/storage.js"></script>
+  <script src="./js/validation.js"></script>
+  <script src="./js/state.js"></script>
+  <script src="./js/dom.js"></script>
+  <script src="./js/events.js"></script>
+  <script src="./js/main.js"></script>
 </body>
 </html>
