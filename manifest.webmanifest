@@ -1,0 +1,14 @@
+{
+  "name": "ClientFlow — Gestão de Clientes e Projetos",
+  "short_name": "ClientFlow",
+  "description": "Organize clientes, projetos e prazos em um só lugar, com alertas automáticos de atraso.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#EEF1EF",
+  "theme_color": "#1B2430",
+  "icons": [
+    { "src": "./assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "./assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

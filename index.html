@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ClientFlow — Gestão de Clientes e Projetos</title>
+  <meta name="description" content="Organize clientes, projetos e prazos em um só lugar, com alertas automáticos de atraso." />
+  <meta name="theme-color" content="#1B2430" />
+
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" href="./assets/icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="./assets/icons/icon-192.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="./css/reset.css" />
+  <link rel="stylesheet" href="./css/variables.css" />
+  <link rel="stylesheet" href="./css/base.css" />
+  <link rel="stylesheet" href="./css/components.css" />
+  <link rel="stylesheet" href="./css/responsive.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Pular para o conteúdo</a>
+
+  <header class="app-header">
+    <div class="app-header__brand">
+      <span class="app-header__logo" aria-hidden="true">CF</span>
+      <div>
+        <p class="app-header__title">ClientFlow</p>
+        <p class="app-header__subtitle">Clientes e projetos, sem planilha</p>
+      </div>
+    </div>
+    <button id="btn-instalar" class="btn btn-ghost" type="button" hidden>Instalar aplicativo</button>
+  </header>
+
+  <main id="main-content" class="container">
+    <section class="ledger" id="dashboard" aria-label="Resumo geral de clientes e projetos">
+      <!-- Preenchido dinamicamente por dom.renderDashboard -->
+    </section>
+
+    <nav class="tabs" aria-label="Seções da aplicação">
+      <button class="tabs__btn is-active" data-view="clientes" type="button">Clientes</button>
+      <button class="tabs__btn" data-view="projetos" type="button">Projetos</button>
+    </nav>
+
+    <section id="view-clientes" class="view" data-view-panel="clientes">
+      <div class="view__toolbar">
+        <label class="sr-only" for="busca-clientes">Buscar clientes</label>
+        <input id="busca-clientes" type="search" placeholder="Buscar por nome ou empresa..." />
+        <button id="btn-novo-cliente" class="btn btn-primary" type="button">+ Novo cliente</button>
+      </div>
+      <div id="lista-clientes" class="stack" role="list" aria-label="Lista de clientes"></div>
+    </section>
+
+    <section id="view-projetos" class="view" data-view-panel="projetos" hidden>
+      <div class="view__toolbar">
+        <label class="sr-only" for="busca-projetos">Buscar projetos</label>
+        <input id="busca-projetos" type="search" placeholder="Buscar por título..." />
+
+        <label class="sr-only" for="filtro-cliente">Filtrar por cliente</label>
+        <select id="filtro-cliente">
+          <option value="">Todos os clientes</option>
+        </select>
+
+        <label class="sr-only" for="filtro-status">Filtrar por status</label>
+        <select id="filtro-status">
+          <option value="">Todos os status</option>
+          <option value="orcado">Orçado</option>
+          <option value="em_andamento">Em andamento</option>
+          <option value="concluido">Concluído</option>
+          <option value="cancelado">Cancelado</option>
+        </select>
+
+        <label class="sr-only" for="ordenar-projetos">Ordenar por</label>
+        <select id="ordenar-projetos">
+          <option value="prazo">Prazo</option>
+          <option value="valor">Maior valor</option>
+          <option value="criadoEm">Mais recentes</option>
+        </select>
+
+        <button id="btn-novo-projeto" class="btn btn-primary" type="button">+ Novo projeto</button>
+      </div>
+      <div id="lista-projetos" class="stack" role="list" aria-label="Lista de projetos"></div>
+    </section>
+  </main>
+
+  <div id="modal-root" aria-hidden="true"></div>
+  <div id="toast-root" class="toast-root" aria-live="polite"></div>
+
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>
