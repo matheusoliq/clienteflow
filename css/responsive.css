@@ -1,0 +1,49 @@
+/* Abordagem mobile-first: o CSS base já cobre celular (colunas empilhadas,
+   toolbar quebrando em várias linhas, ledger em grade 2x2). Os breakpoints
+   abaixo só ajustam o que o CONTEÚDO pede em telas maiores — não são os
+   breakpoints padrão de nenhum framework.
+
+   360px/375px/390px/412px (celulares comuns) e 320px (o menor comum):
+   cobertos pelo layout padrão em coluna única, sem media query nenhuma.
+
+   768px: a partir daqui sobra espaço horizontal para o ledger virar uma
+   única linha de 4 blocos em vez de grade 2x2, e para os cards de
+   cliente/projeto alinharem tudo numa mesma linha vertical central. */
+@media (min-width: 768px) {
+  .ledger__item {
+    flex: 1 1 25%;
+    border-bottom: none;
+  }
+
+  .ledger__item:not(:last-child) {
+    border-right: 1px solid var(--color-border);
+  }
+
+  .card {
+    align-items: center;
+  }
+}
+
+/* 1024px: monitores/notebooks — damos mais respiro nas laterais em vez de
+   deixar o texto esticar até a borda da tela. */
+@media (min-width: 1024px) {
+  .container,
+  .app-header {
+    padding-left: var(--space-6);
+    padding-right: var(--space-6);
+  }
+}
+
+/* Orientação horizontal em telas pequenas (celular deitado): reduz o
+   espaçamento vertical do cabeçalho para não empurrar o conteúdo para
+   fora da área visível. */
+@media (max-height: 480px) and (orientation: landscape) {
+  .app-header {
+    padding-top: var(--space-2);
+    padding-bottom: var(--space-2);
+  }
+
+  .ledger__item {
+    padding: var(--space-3);
+  }
+}

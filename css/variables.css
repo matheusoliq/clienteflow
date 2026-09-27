@@ -1,0 +1,74 @@
+/* Sistema de design do ClientFlow.
+   Paleta "livro-caixa": tons de tinta e papel, com um acento em latão
+   que remete a carimbos e contabilidade — evita o azul/roxo genérico
+   de dashboard SaaS e dá personalidade ao domínio (gestão financeira
+   de projetos). */
+
+:root {
+  --color-bg: #EEF1EF;
+  --color-surface: #FFFFFF;
+  --color-ink: #1B2430;
+  --color-ink-soft: #56626F;
+  --color-border: #D7DCD9;
+
+  --color-accent: #B8862E;
+  --color-accent-soft: #F3E7CE;
+
+  --color-danger: #A13D3D;
+  --color-danger-soft: #F3DEDE;
+
+  --color-success: #3F7A57;
+  --color-success-soft: #DDEEE3;
+
+  --color-progress: #2F6F62;
+  --color-progress-soft: #DCEAE7;
+
+  --color-neutral-soft: #E4E7E5;
+
+  --font-display: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-base: 1rem;
+  --fs-md: 1.125rem;
+  --fs-lg: 1.5rem;
+  --fs-xl: 2rem;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+
+  --radius-sm: 4px;
+  --radius-md: 10px;
+
+  --shadow-sm: 0 1px 2px rgba(27, 36, 48, 0.08);
+  --shadow-md: 0 8px 24px rgba(27, 36, 48, 0.16);
+
+  --transition-base: 180ms ease;
+
+  --content-max: 1180px;
+}
+
+/* Tema escuro automático, respeitando a preferência do sistema.
+   Mantém os mesmos nomes de token — o resto do CSS não muda. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #14181D;
+    --color-surface: #1D2229;
+    --color-ink: #EDEFEA;
+    --color-ink-soft: #A7AFB8;
+    --color-border: #2C333B;
+    --color-accent: #D6A85A;
+    --color-accent-soft: #3A2F1C;
+    --color-danger-soft: #3A2323;
+    --color-success-soft: #1E332A;
+    --color-progress-soft: #1B2E2B;
+    --color-neutral-soft: #262C33;
+  }
+}
