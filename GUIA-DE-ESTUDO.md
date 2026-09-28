@@ -158,3 +158,15 @@ Para cada arquivo: o que ele faz, por que foi criado, por que essa abordagem (e 
 ## PWA (`manifest.webmanifest` + `sw.js`)
 
 Já documentado em detalhe nas seções **PWA** e **Funcionamento offline** do `README.md` — vale a leitura de lá para a explicação de "o que fica disponível offline" e "por que cache-first".
+
+---
+
+## Armadilha real: `<input name="id">` sequestra `form.id`
+
+**O bug:** os formulários tinham um campo escondido `<input type="hidden" name="id">` para distinguir "criar" de "editar". Só que, no HTML, form controls nomeados viram propriedades do próprio `<form>` — então `form.id` deixava de ser a string `"form-cliente"` e passava a ser o elemento `<input>`. O handler comparava `form.id === 'form-cliente'`, que nunca era verdadeiro: o submit disparava, `preventDefault()` rodava, e mais nada acontecia (nada salvava, nenhum erro aparecia).
+
+**Por que passou despercebido:** testes em jsdom não reproduzem esse comportamento; só um navegador real (Chromium via Playwright) expôs o problema.
+
+**A correção:** o campo passou a se chamar `registroId`. Regra prática: nunca use como `name`/`id` de um campo dentro de um `<form>` nomes que colidem com propriedades nativas do form (`id`, `name`, `action`, `method`, `target`, `elements`, `length`, `submit`, `reset`).
+
+**O que vale anotar:** teste fluxos de formulário em um navegador de verdade, não só em simuladores de DOM.

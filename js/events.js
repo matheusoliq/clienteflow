@@ -137,7 +137,7 @@ window.ClientFlow.events = (function () {
           dom.abrirModal(modalRoot, dom.formularioCliente(dados, erros));
           return;
         }
-        if (dados.id) estadoModulo.atualizarCliente(dados.id, dados);
+        if (dados.registroId) estadoModulo.atualizarCliente(dados.registroId, dados);
         else estadoModulo.adicionarCliente(dados);
         dom.fecharModal(modalRoot);
         dom.mostrarToast(toastRoot, 'Cliente salvo com sucesso.');
@@ -149,7 +149,7 @@ window.ClientFlow.events = (function () {
           dom.abrirModal(modalRoot, dom.formularioProjeto(estadoModulo.getEstado().clientes, dados, erros));
           return;
         }
-        if (dados.id) estadoModulo.atualizarProjeto(dados.id, dados);
+        if (dados.registroId) estadoModulo.atualizarProjeto(dados.registroId, dados);
         else estadoModulo.adicionarProjeto(dados);
         dom.fecharModal(modalRoot);
         dom.mostrarToast(toastRoot, 'Projeto salvo com sucesso.');

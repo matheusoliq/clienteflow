@@ -11,7 +11,7 @@ window.ClientFlow = window.ClientFlow || {};
 
 window.ClientFlow.dom = (function () {
   const { formatarMoeda, formatarData } = window.ClientFlow.utils;
-  const { estaAtrasado, getClientePorId } = window.ClientFlow.state;
+  const { estaAtrasado, getClientePorId, diasParaPrazo, getProjetosDoCliente } = window.ClientFlow.state;
 
   const STATUS_LABELS = {
     orcado: 'Orçado',
@@ -153,6 +153,12 @@ window.ClientFlow.dom = (function () {
     }
     clientes.forEach((cliente) => {
       const meta = [cliente.empresa, cliente.email, cliente.telefone].filter(Boolean).join(' · ');
+      const projetosDoCliente = getProjetosDoCliente(cliente.id);
+      const totalValor = projetosDoCliente.reduce((soma, p) => soma + p.valor, 0);
+      const resumoProjetos =
+        projetosDoCliente.length === 0
+          ? 'Nenhum projeto'
+          : `${projetosDoCliente.length} ${projetosDoCliente.length === 1 ? 'projeto' : 'projetos'} · ${formatarMoeda(totalValor)}`;
       container.appendChild(
         el('article', { class: 'card', role: 'listitem' }, [
           el('div', { class: 'card__linha' }, [
@@ -160,6 +166,7 @@ window.ClientFlow.dom = (function () {
             el('div', {}, [
               el('p', { class: 'card__titulo', texto: cliente.nome }),
               el('p', { class: 'card__meta', texto: meta }),
+              el('p', { class: 'card__chip', texto: resumoProjetos }),
             ]),
           ]),
           el('div', { class: 'card__acoes' }, [
@@ -187,7 +194,26 @@ window.ClientFlow.dom = (function () {
       const atrasado = estaAtrasado(projeto);
       const tom = atrasado ? 'danger' : projeto.status;
       const rotuloBadge = atrasado ? 'Atrasado' : STATUS_LABELS[projeto.status];
-      const meta = `${cliente?.nome || 'Cliente removido'} · ${formatarMoeda(projeto.valor)} · prazo ${formatarData(projeto.prazo)}`;
+      const meta = `${cliente?.nome || 'Cliente removido'} · ${formatarMoeda(projeto.valor)}`;
+      const periodo = `${formatarData(projeto.dataInicio)} → ${formatarData(projeto.prazo)}`;
+      let dica = '';
+      let tomDica = '';
+      if (projeto.status === 'concluido') {
+        dica = projeto.dataConclusao ? `Concluído em ${formatarData(projeto.dataConclusao)}` : 'Concluído';
+        tomDica = 'sucesso';
+      } else if (projeto.status === 'em_andamento') {
+        const dias = diasParaPrazo(projeto);
+        if (dias < 0) {
+          dica = `${Math.abs(dias)} ${Math.abs(dias) === 1 ? 'dia' : 'dias'} de atraso`;
+          tomDica = 'danger';
+        } else if (dias === 0) {
+          dica = 'Vence hoje';
+          tomDica = 'alerta';
+        } else {
+          dica = `Faltam ${dias} ${dias === 1 ? 'dia' : 'dias'}`;
+          tomDica = dias <= 7 ? 'alerta' : '';
+        }
+      }
 
       container.appendChild(
         el('article', { class: `card card--${tom}`, role: 'listitem' }, [
@@ -197,6 +223,10 @@ window.ClientFlow.dom = (function () {
               el('span', { class: `badge badge--${tom}`, texto: rotuloBadge }),
             ]),
             el('p', { class: 'card__meta', texto: meta }),
+            el('p', { class: 'card__meta card__periodo' }, [
+              el('span', { texto: periodo }),
+              dica ? el('span', { class: `dica dica--${tomDica || 'neutro'}`, texto: dica }) : document.createTextNode(''),
+            ]),
           ]),
           el('div', { class: 'card__acoes' }, [
             botaoComIcone('editar', 'Editar', { class: 'btn btn-secondary btn-sm', 'data-acao': 'editar-projeto', 'data-id': projeto.id }),
@@ -243,7 +273,11 @@ window.ClientFlow.dom = (function () {
       campoFormulario({ id: 'empresa', rotulo: 'Empresa (opcional)', valor: cliente.empresa }),
       campoFormulario({ id: 'email', rotulo: 'E-mail', tipo: 'email', valor: cliente.email, erro: erros.email, extraProps: { required: true } }),
       campoFormulario({ id: 'telefone', rotulo: 'Telefone', valor: cliente.telefone, erro: erros.telefone, extraProps: { required: true } }),
-      el('input', { type: 'hidden', name: 'id', value: cliente.id || '' }),
+      // O campo escondido NÃO pode se chamar "id": um <input name="id"> dentro
+      // de um <form> sequestra a própria propriedade form.id (o navegador expõe
+      // form controls nomeados como propriedades do form) — form.id passaria a
+      // apontar para este <input>, não para a string do atributo id do form.
+      el('input', { type: 'hidden', name: 'registroId', value: cliente.id || '' }),
       el('div', { class: 'modal__acoes' }, [
         el('button', { type: 'button', class: 'btn btn-ghost', 'data-fechar-modal': 'true', texto: 'Cancelar' }),
         el('button', { type: 'submit', class: 'btn btn-primary', texto: 'Salvar' }),
@@ -281,7 +315,9 @@ window.ClientFlow.dom = (function () {
       campoFormulario({ id: 'dataInicio', rotulo: 'Data de início', tipo: 'date', valor: projeto.dataInicio, erro: erros.dataInicio, extraProps: { required: true } }),
       campoFormulario({ id: 'prazo', rotulo: 'Prazo', tipo: 'date', valor: projeto.prazo, erro: erros.prazo, extraProps: { required: true } }),
       grupoStatus,
-      el('input', { type: 'hidden', name: 'id', value: projeto.id || '' }),
+      // Ver o comentário equivalente em formularioCliente: "id" colidiria com
+      // a propriedade nativa form.id.
+      el('input', { type: 'hidden', name: 'registroId', value: projeto.id || '' }),
       el('div', { class: 'modal__acoes' }, [
         el('button', { type: 'button', class: 'btn btn-ghost', 'data-fechar-modal': 'true', texto: 'Cancelar' }),
         el('button', { type: 'submit', class: 'btn btn-primary', texto: 'Salvar' }),

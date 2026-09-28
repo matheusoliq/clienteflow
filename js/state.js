@@ -50,10 +50,10 @@ window.ClientFlow.state = (function () {
   // --- Clientes ---------------------------------------------------------
 
   function adicionarCliente(dados) {
-    // Descartamos id/criadoEm vindos do formulário (o campo id existe
+    // Descartamos registroId/criadoEm vindos do formulário (o campo existe
     // porque o mesmo form serve para criar E editar) para não deixar um
     // valor vazio sobrescrever o id gerado aqui.
-    const { id, criadoEm, ...resto } = dados;
+    const { registroId, criadoEm, ...resto } = dados;
     const cliente = { id: gerarId(), criadoEm: hojeISO(), ...resto };
     estado.clientes = [...estado.clientes, cliente];
     storage.salvarClientes(estado.clientes);
@@ -86,7 +86,7 @@ window.ClientFlow.state = (function () {
   // --- Projetos -----------------------------------------------------------
 
   function adicionarProjeto(dados) {
-    const { id, criadoEm, dataConclusao, ...resto } = dados;
+    const { registroId, criadoEm, dataConclusao, ...resto } = dados;
     const projeto = {
       id: gerarId(),
       criadoEm: hojeISO(),
@@ -155,6 +155,16 @@ window.ClientFlow.state = (function () {
     return projeto.prazo >= hoje && projeto.prazo <= limiteISO;
   }
 
+  // Diferença em dias entre o prazo e hoje (negativo = já passou).
+  function diasParaPrazo(projeto) {
+    const MS_POR_DIA = 24 * 60 * 60 * 1000;
+    return Math.round((Date.parse(projeto.prazo) - Date.parse(hojeISO())) / MS_POR_DIA);
+  }
+
+  function getProjetosDoCliente(clienteId) {
+    return estado.projetos.filter((projeto) => projeto.clienteId === clienteId);
+  }
+
   function getProjetosFiltrados() {
     const { buscaProjetos, clienteId, status, ordenar } = estado.filtros;
 
@@ -218,6 +228,8 @@ window.ClientFlow.state = (function () {
     atualizarFiltros,
     estaAtrasado,
     venceEmBreve,
+    diasParaPrazo,
+    getProjetosDoCliente,
     getProjetosFiltrados,
     getClientesFiltrados,
     getResumo,

@@ -58,8 +58,14 @@
   border-right: 1px solid var(--color-border);
   border-bottom: 1px solid var(--color-border);
   display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.ledger__valor,
+.ledger__rotulo {
+  display: block;
 }
 
 .ledger__item:nth-child(2n) {
@@ -81,29 +87,42 @@
   color: var(--color-ink-soft);
 }
 
+@media (max-width: 767px) {
+  .ledger__item:nth-child(3) {
+    flex-basis: 100%;
+    border-right: none;
+  }
+}
+
 .ledger__item--danger .ledger__valor { color: var(--color-danger); }
 .ledger__item--alerta .ledger__valor { color: var(--color-accent); }
 .ledger__item--sucesso .ledger__valor { color: var(--color-success); }
 
-/* Abas */
+/* Abas — seletor segmentado (pill), não sublinhado de blog: comunica
+   "trocar de painel dentro do mesmo app", não "navegar para outra página". */
 .tabs {
-  display: flex;
-  gap: var(--space-4);
-  border-bottom: 1px solid var(--color-border);
+  display: inline-flex;
+  gap: 2px;
+  background: var(--color-neutral-soft);
+  padding: 4px;
+  border-radius: 999px;
   margin-bottom: var(--space-5);
+  border-bottom: none;
 }
 
 .tabs__btn {
-  padding: var(--space-3) var(--space-1);
+  padding: var(--space-2) var(--space-5);
+  border-radius: 999px;
   font-weight: 600;
   color: var(--color-ink-soft);
-  border-bottom: 2px solid transparent;
-  transition: color var(--transition-base), border-color var(--transition-base);
+  border-bottom: none;
+  transition: background var(--transition-base), color var(--transition-base), box-shadow var(--transition-base);
 }
 
 .tabs__btn.is-active {
+  background: var(--color-surface);
   color: var(--color-ink);
-  border-bottom-color: var(--color-accent);
+  box-shadow: var(--shadow-sm);
 }
 
 /* Barra de ferramentas de cada seção */
@@ -122,6 +141,30 @@
   background: var(--color-surface);
   min-width: 160px;
   flex: 1 1 160px;
+  height: 40px;
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+}
+
+.view__toolbar input[type="search"]:focus,
+.view__toolbar select:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-soft);
+}
+
+/* Remove a aparência nativa do <select> do sistema operacional (a maior
+   responsável por deixar a interface com "cara de formulário padrão") e
+   desenha uma seta própria via CSS, consistente com o resto do design. */
+select.input,
+.view__toolbar select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2356626F' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px;
+  padding-right: 34px;
+  cursor: pointer;
 }
 
 .view__toolbar .btn-primary {
@@ -138,8 +181,9 @@
 
 .card {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: stretch;
   gap: var(--space-4);
   background: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -203,6 +247,7 @@
   display: flex;
   gap: var(--space-2);
   flex-shrink: 0;
+  justify-content: flex-end;
 }
 
 /* Ícones (SVG construído via JS, ver dom.js) */
@@ -326,6 +371,13 @@
   border-radius: var(--radius-sm);
   background: var(--color-surface);
   width: 100%;
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-soft);
 }
 
 .field__erro {
@@ -435,4 +487,62 @@
 
 .toast--erro {
   background: var(--color-danger);
+}
+
+/* Cabeçalho de seção com contagem */
+.view__cabecalho {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.view__titulo {
+  font-size: var(--fs-lg);
+}
+
+.view__contagem {
+  font-size: var(--fs-sm);
+  color: var(--color-ink-soft);
+}
+
+/* Detalhes dos cards */
+.card {
+  box-shadow: var(--shadow-sm);
+}
+
+.card__chip {
+  display: inline-block;
+  white-space: nowrap;
+  margin-top: var(--space-2);
+  padding: 2px var(--space-2);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--color-ink-soft);
+  background: var(--color-neutral-soft);
+  border-radius: var(--radius-sm);
+}
+
+.card__periodo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+}
+
+.dica {
+  font-family: var(--font-body);
+  font-weight: 600;
+}
+
+.dica--danger { color: var(--color-danger); }
+.dica--alerta { color: var(--color-accent); }
+.dica--sucesso { color: var(--color-success); }
+.dica--neutro { color: var(--color-ink-soft); }
+
+.app-header {
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: var(--space-5);
 }

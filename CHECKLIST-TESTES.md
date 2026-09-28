@@ -1,6 +1,7 @@
 # Checklist de Testes Manuais — ClientFlow
 
 ## Clientes
+- [ ] Criar o primeiro cliente do zero (formulário salva, aparece na lista com avatar e toast de sucesso)
 - [ ] Criar cliente com todos os campos válidos
 - [ ] Tentar criar cliente sem nome (deve bloquear e mostrar erro)
 - [ ] Tentar criar cliente com e-mail inválido (ex.: `teste@teste`)

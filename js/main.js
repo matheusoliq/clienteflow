@@ -12,6 +12,16 @@ window.ClientFlow = window.ClientFlow || {};
     dom.renderClientes(document.getElementById('lista-clientes'), estado.getClientesFiltrados());
     dom.renderProjetos(document.getElementById('lista-projetos'), estado.getProjetosFiltrados());
 
+    const totalClientes = estadoAtual.clientes.length;
+    const totalProjetos = estadoAtual.projetos.length;
+    const projetosVisiveis = estado.getProjetosFiltrados().length;
+    document.getElementById('contagem-clientes').textContent =
+      totalClientes === 1 ? '1 cliente' : `${totalClientes} clientes`;
+    document.getElementById('contagem-projetos').textContent =
+      projetosVisiveis === totalProjetos
+        ? (totalProjetos === 1 ? '1 projeto' : `${totalProjetos} projetos`)
+        : `${projetosVisiveis} de ${totalProjetos} projetos`;
+
     // O <select> de filtro por cliente depende da lista de clientes, então
     // precisa ser reconstruído sempre que o estado mudar — mas preservando
     // a opção atualmente selecionada, para não "resetar" o filtro do usuário

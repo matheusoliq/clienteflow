@@ -49,6 +49,10 @@
     </nav>
 
     <section id="view-clientes" class="view" data-view-panel="clientes">
+      <div class="view__cabecalho">
+        <h2 class="view__titulo">Clientes</h2>
+        <span id="contagem-clientes" class="view__contagem"></span>
+      </div>
       <div class="view__toolbar">
         <label class="sr-only" for="busca-clientes">Buscar clientes</label>
         <input id="busca-clientes" type="search" placeholder="Buscar por nome ou empresa..." />
@@ -58,6 +62,10 @@
     </section>
 
     <section id="view-projetos" class="view" data-view-panel="projetos" hidden>
+      <div class="view__cabecalho">
+        <h2 class="view__titulo">Projetos</h2>
+        <span id="contagem-projetos" class="view__contagem"></span>
+      </div>
       <div class="view__toolbar">
         <label class="sr-only" for="busca-projetos">Buscar projetos</label>
         <input id="busca-projetos" type="search" placeholder="Buscar por título..." />

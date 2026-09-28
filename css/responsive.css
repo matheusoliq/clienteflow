@@ -24,6 +24,16 @@
   }
 }
 
+/* 640px: a partir daqui o card cabe em uma linha só (texto à esquerda,
+   ações à direita); abaixo disso as ações descem para a linha de baixo
+   para não estourar a largura do card. */
+@media (min-width: 640px) {
+  .card {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
 /* 1024px: monitores/notebooks — damos mais respiro nas laterais em vez de
    deixar o texto esticar até a borda da tela. */
 @media (min-width: 1024px) {
